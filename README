@@ -1,0 +1,12 @@
+H1. About
+Core routing system in the mson architecture.  It's very much unpolished and very much not ready for general release :-).
+
+H2. Dependencies
+* RabbitMQ AMQP Erlang client
+* erlang_couchdb
+
+H2. Goals
+I plan on packing this as a proper OTP application soon.
+
+H2. Thanks
+To ngerakines for making the erlang_couchdb module.  It made my life much, much easier.
