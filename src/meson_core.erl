@@ -25,36 +25,29 @@
 %% @author Chris Chandler <chris@chrischandler.name>
 %% @copyright 2009 Chris Chandler
 %% @version 0.1alpha
-%% @doc The meson goal server supervisor
+%% @doc The meson core application start module
 %% 
 %% This code is available as Open Source Software under the MIT license.
 %% 
 %% Updates at http://github.com/cchandler/meson/
 
--module(meson_core_supervisor).
 
--behavior(supervisor).
+% Start the app from the command line
+% erl -boot start_sasl -eval 'application:lomeson_core), application:start(meson_core).'
 
--export([start/0, start_in_shell/0, init/1, start_link/1]).
+-module(meson_core).
 
-start() ->
-	spawn( fun() ->
-		supervisor:start_link({local,?MODULE}, ?MODULE, _Arg = [])
-		end).
+-behaviour(application).
 
-start_in_shell() ->
-	{ok, Pid} = supervisor:start_link({local,?MODULE}, ?MODULE, _Arg = []),
-	unlink(Pid).
+-export([start/2, stop/1]).
 
-start_link(Args) ->
-	supervisor:start_link({local,?MODULE}, ?MODULE, Args).
-
-init(Args) ->
-	{ok, {{one_for_one, 3, 10},
-	[{tag1,
-		{goal_server, start_link, Args},
-		permanent,
-		10000,
-		worker,
-		[goal_server]}
-		]}}.
+start(_Type, StartArgs) ->
+	case meson_core_supervisor:start_link(StartArgs) of
+		{ok, Pid} ->
+			{ok,Pid};
+		Error ->
+			Error
+	end.
+	
+stop(_State) ->
+	ok.

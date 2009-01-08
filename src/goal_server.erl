@@ -69,6 +69,14 @@ init([Host,Opts]) ->
 	Connection = amqp_connection:start("internal", "password", "localhost", <<"internal">>),
 	Channel = lib_amqp:start_channel(Connection),
 	Q = <<"find-goal">>,
+	
+	%Declare and bind the queue just to be safe
+	lib_amqp:declare_queue(Channel, Q),
+	X = <<"find-goal">>,
+	lib_amqp:declare_exchange(Channel, X),
+	BindKey = <<"find-goal">>,
+	lib_amqp:bind_queue(Channel, X, Q, BindKey),
+	
 	lib_amqp:subscribe(Channel, Q, Consumer, true),
 	io:format("Subscribing~n", []),
 	
