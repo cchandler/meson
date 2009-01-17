@@ -38,7 +38,7 @@
 -include("../include/meson_core_records.hrl").
 
 -include_lib("rabbitmq_server/include/rabbit_framing.hrl").
--include_lib("rfc4627/include/rfc4627.hrl").
+% -include_lib("rfc4627/include/rfc4627.hrl").
 
 -export([init/1, handle_info/2, terminate/2]).
 -export([code_change/3, handle_call/2, handle_event/2]).
